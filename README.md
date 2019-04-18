@@ -1,4 +1,4 @@
-### CEG-4900 In class exercies April 19
+### CEG-4900 In class exercies April 18
 Building your own Virtual cyber range.
 
 ### Background
