@@ -72,7 +72,13 @@ VM highlighted click on the Settings button:
    internet access to install and configure our VM.  Later we will lock this down
    as necessary.
 
-### Task 3 - 
+### Task 3 - Start your engines!
+Or VM's...  In either case, start your VM and walk through the installation 
+process.  I am not going to cover all parts here, for the purposes of this 
+exercise simply accept all defaults and enter your username and password when
+prompted.
+
+### Task 4 - Configuring bWAPP
 
 
 
