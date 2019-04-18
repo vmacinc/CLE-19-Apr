@@ -75,11 +75,86 @@ VM highlighted click on the Settings button:
 ### Task 3 - Start your engines!
 Or VM's...  In either case, start your VM and walk through the installation 
 process.  I am not going to cover all parts here, for the purposes of this 
-exercise simply accept all defaults and enter your username and password when
+exercise ssmply accept all defaults and enter your username and password when
 prompted.
 
+First things first, lets install SSH and setup a port forward so we can SSH 
+into our VM from our host.
+
+1. Sign in to your newly install VM and run the following:
+   ```
+   sudo apt update && sudo apt install -y ssh
+   ```
+2. Now configure your port forward by going to `Machine` > `Settings` > `Network` 
+   > `Advanced` > `Port Forwarding`
+3. Add a Rule and enter `2022` for the Host Port and `22` under Guest Port.
+4. While we are here lets add a rule we will need for later:  
+   `8080` Host port to `80` Guest port.
+5. You should now be able to SSH into your Virtual MAchine from your host with 
+   the following: `ssh -p 2022 username@localhost`
+
 ### Task 4 - Configuring bWAPP
+Install the pre-requisites for bWAP (and almost any other web application) 
+with the following:
+```
+sudo apt update && sudo apt install -y \
+       virtualbox-guest-utils \
+       vim \
+       wget \
+       git \
+       curl \
+       unzip \
+       apache2 \
+       mysql-server \
+       php \
+       php-mysql \
+       libapache2-mod-php 
 
+```
 
+Download bWAPP with the following command:
+```
+wget https://github.com/mkijowski/ceg-4900-class-exercise-April-19/raw/master/files/bWAPP_latest.zip
+unzip bWAPP_latest.zip
+sudo mv ./bWAPP/ /var/www/html/
+cd /var/www/html/bWAPP/
+sudo chmod 777 passwords/
+sudo chmod 777 images/
+sudo chmod 777 documents/
+sudo chmod 777 logs/
+```
 
+To create the database for bWAPP first sign into mysql as root:
+```
+sudo mysql -u root
+```
+
+Now enter the following commands into mysql:
+```
+GRANT ALL PRIVILEGES ON bWAPP.* TO 'queenbee'@'localhost' IDENTIFIED BY 'bug';
+FLUSH PRIVILEGES;
+exit
+```
+
+Finally, edit the file `/var/www/html/bWAPP/admin/settings.php` so the 
+database infor matches the user created above:
+```
+// Database connection settings
+$db_server = "localhost";
+$db_username = "queenbee";
+$db_password = "bug";
+$db_name = "bWAPP";
+```
+
+### Task 5 - Kick the tires
+You should now be ready to test out your VM.  On your host system browse to
+[localhost:8080/bWAPP/install.php](localhost:8080/bWAPP/install.php)
+
+If everything worked out you should see the install page for bWAPP.  On it 
+you simply need to click the link that says: Click **here** to install bWAPP.
+
+Lets go the extra couple steps and lock this down further.  Edit the 
+network settings of your bWAPP vm and switch it to internal network.  This 
+will remove external access which should be fine now that we have the VM 
+fully installed.
 
